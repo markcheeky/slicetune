@@ -1,0 +1,5 @@
+name: slicetune
+channels:
+  - defaults
+dependencies:
+  - python=3.10

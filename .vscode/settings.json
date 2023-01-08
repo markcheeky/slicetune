@@ -1,0 +1,17 @@
+{
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "python.testing.pytestArgs": [
+        "tests",
+        "slicetune",
+        "--doctest-modules"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.defaultInterpreterPath": "/home/user/.conda/envs/venv/bin/python"
+}

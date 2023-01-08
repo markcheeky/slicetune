@@ -1,0 +1,13 @@
+{
+	"name": "Dev Dockerfile",
+	"context": "..",
+	"dockerFile": "../docker/dev/Dockerfile",
+	"remoteUser": "user",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python"
+			]
+		}
+	}
+}
