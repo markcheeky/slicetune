@@ -1,6 +1,6 @@
 # Slicetune [WIP]
 
-A non-invasive parameter-efficient method for finetuning large neural models.
+A simple, flexible and non-invasive parameter-efficient method for finetuning large neural models.
 
 
 ### TODO
