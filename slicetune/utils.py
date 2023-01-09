@@ -30,7 +30,9 @@ def fuse(model: torch.nn.Module) -> None:
     Replaces all slicetune layers in the model with equivalent standard layers.
     Enables gradient computation for all parameters.
     """
-    for name, module in model.named_modules():
+    # prevent invalidating the iterator by setattr
+    modules = list(model.named_modules())
+    for name, module in modules:
         if isinstance(module, slicetune.nn.Layer):
             setattr(model, name, module.to_standard())
     for param in model.parameters():

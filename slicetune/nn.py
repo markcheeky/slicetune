@@ -246,7 +246,9 @@ class Linear(Layer):
         if random_generator is None:
             random_generator = random.Random()
 
-        for name, module in model.named_modules():
+        # prevent invalidating the iterator by setattr
+        modules = list(model.named_modules())
+        for name, module in modules:
             if isinstance(module, torch.nn.Linear):
                 replaced = Linear.from_standard(
                     module,
