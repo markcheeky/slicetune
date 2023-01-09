@@ -8,7 +8,7 @@ import torch
 import slicetune.nn
 
 
-def set_trainable(
+def mark_for_training(
     model: torch.nn.Module,
     train_tuners: bool = True,
     train_biases: bool = False,

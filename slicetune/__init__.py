@@ -1,5 +1,12 @@
 from . import nn, utils
-from .utils import describe, fuse, get_slicetune_layers, get_tuners, pretty_describe, set_trainable
+from .utils import (
+    describe,
+    fuse,
+    get_slicetune_layers,
+    get_tuners,
+    mark_for_training,
+    pretty_describe,
+)
 
 patch_linears = nn.Linear.patch
 
@@ -12,5 +19,5 @@ __all__ = [
     "get_slicetune_layers",
     "get_tuners",
     "pretty_describe",
-    "set_trainable",
+    "mark_for_training",
 ]
