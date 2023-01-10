@@ -57,20 +57,30 @@ slicetune.mark_for_training(model)
 ```
 
 
+## Q&A
 
-## How does it work?
+### Why not finetune the whole model?
+
+Slicetuning belongs to a family of **parameter-efficient finetuning methods (PEFT)** that update only a fraction of parameters. There are multiple benefits:
+
+1. **Finetuning a large model requires a lot of (gpu) memory.** PEFT dramatically decreases memory usage because the optimizer stores state only for the trained parameters.
+1. **It prevents catastrophic forgetting.** Training of all parameters causes models to forget general knowledge from pretraining phase. This is similar to overfitting - it makes the model perform well on train data but badly on unseen data.
+1. **It makes finetuning faster.** Fitting less parameters usually needs less iterations to converge
+1. **It increases accuracy in low-data setting.** If your train set is small, you might actually get a more capable model by training only a part of the model. This is likely a consequence of item 2.
+1. **It increases robustness on out-of-domain data.** This is also a consequence of item 2.
+
+
+### How does slicetuning work?
 
 The idea is to update only selected slices of model parameter tensors. However, torch optimizers can only update a whole tensor, not slices. `slicetune` solves it by replacing `torch.nn.Linear` layers with `slicetune.nn.Linear` which contains an extra parameter tensor `tuner` which is added to a slice of the `weight` parameter during `.forward()`. Now, you can optimize only the tuner parameters during training. After training, you can replace back slicetune layers with standard layers, apply the `tuner` to the `weight` and obtain a model with exactly the same architecture it had before.
 
 
-## Q&A
-
-#### Why slicetune layers instead of zeroing-out majority of `.grads` in optimizer before `optimizer.step()`?
+### Why slicetune layers instead of zeroing-out majority of `.grads` in optimizer before `optimizer.step()`?
 Becase optimizing just the tuners is requires less memory. Let's say we have 1024x1024 linear layer and want to update just 256x256 parameters (around 6%). In zeroing-out method, optimizer saves the state for a each 1024x1024 weight matrix. With slicetune layers, the optimizer only saves the state for the small 256x256 matrix.
 
 
 ### TODO
-
+- [ ] include the "whole-columns" 
 - [ ] benchmark the method
 - [ ] write tests
 - [ ] write docs
