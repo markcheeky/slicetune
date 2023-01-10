@@ -73,7 +73,7 @@ class Linear(Layer):
 
         self.weight: torch.nn.Parameter
         self.tuner: torch.nn.Parameter
-        self.bias: torch.nn.Parameter
+        self.bias: torch.nn.Parameter | None
         self.tuner_dropout: torch.nn.Dropout
         self.in_features: int
         self.out_features: int
@@ -158,7 +158,8 @@ class Linear(Layer):
 
         with torch.no_grad():
             self.weight[:] = linear.weight
-            self.bias[:] = linear.bias
+            if self.bias is not None:
+                self.bias[:] = linear.bias
             self.tuner.fill_(self.get_init_value(self.operation))
 
     def forward(self, x: Tensor) -> Tensor:
@@ -216,7 +217,9 @@ class Linear(Layer):
         )
         with torch.no_grad():
             layer.weight[:] = self._get_w()
-            layer.bias[:] = self.bias
+            if layer.bias is not None:
+                assert self.bias is not None
+                layer.bias[:] = self.bias
         if was_training:
             self.train()
         return layer
