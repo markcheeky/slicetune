@@ -32,6 +32,10 @@ model.save_pretrained("./my_model")
 model = transformers.AutoModel.from_pretrained("./my_model")
 ```
 
+## How does it work?
+
+The idea is to update only selected slices of model parameter tensors. However, torch optimizers can only update a whole tensor, not slices. `slicetune` solves it by replacing `torch.nn.Linear` layers with `slicetune.nn.Linear` which contains an extra parameter tensor `tuner` which is added to a slice of the `weight` parameter during `.forward()`. Now, you can optimize only the tuner parameters during training. After training, you can replace back slicetune layers with standard layers, apply the `tuner` to the `weight` and obtain a model with exactly the same architecture it had before.
+
 
 ### TODO
 
