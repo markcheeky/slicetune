@@ -2,6 +2,8 @@
 
 A simple, flexible and non-invasive parameter-efficient method for finetuning large neural models.
 
+With few lines of code, you can finetune only a desired fraction of parameters. The method is compatible with any with any `torch.nn.Optimizer` and with any `torch.nn.Module` that uses linear layers, such as (huggingface) transformers. After finetuning, you can "fuse" the trained parameters into the model and obtain exactly the same architecture as the original checkpoint you started from. You don't need to use this package during inference - you don't even have to have it installed during inference.
+
 
 ## Example usage
 
