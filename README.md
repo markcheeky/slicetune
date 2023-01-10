@@ -1,16 +1,21 @@
-# Slicetune [WIP]
+# Slicetune 🍕 [WIP]
 
 A simple, flexible and non-invasive parameter-efficient method for finetuning large neural models.
 
 With few lines of code, you can finetune only a desired fraction of parameters. The method is compatible with any with any `torch.nn.Optimizer` and with any `torch.nn.Module` that uses linear layers, such as (huggingface) transformers. After finetuning, you can "fuse" the trained parameters into the model and obtain exactly the same architecture as the original checkpoint you started from. You don't need to use this package during inference - you don't even have to have it installed during inference.
 
+<br/>
+
 
 ## Instalation
+
 `pip install "slicetune[pretty] @ git+ssh://git@github.com/markcheeky/slicetune.git"`
 
 TODO: publish on pypi
 
 optional dependency `pretty` is for a pretty summary of finetuning parameters.
+
+<br/>
 
 
 ## Example usage
@@ -64,18 +69,19 @@ slicetune.mark_for_training(model)
 
 ```
 
+<br/>
 
 ## Q&A
 
 ### Why not finetune the whole model?
 
-Slicetuning belongs to a family of **parameter-efficient finetuning methods (PEFT)** that update only a fraction of parameters. There are multiple benefits:
+Slicetuning belongs to a family of *parameter-efficient finetuning methods (PEFT)* that update only a fraction of parameters. There are multiple benefits:
 
-1. **Finetuning a large model requires a lot of (gpu) memory.** PEFT dramatically decreases memory usage because the optimizer stores state only for the trained parameters.
-1. **It prevents catastrophic forgetting.** Training of all parameters causes models to forget general knowledge from pretraining phase. This is similar to overfitting - it makes the model perform well on train data but badly on unseen data.
-1. **It makes finetuning faster.** Fitting less parameters usually needs less iterations to converge
-1. **It increases accuracy in low-data setting.** If your train set is small, you might actually get a more capable model by training only a part of the model. This is likely a consequence of item 2.
-1. **It increases robustness on out-of-domain data.** This is also a consequence of item 2.
+1. **It dramatically decreases (gpu) memory usage.** A full finetuning of a large model requires a lot of memory for optimizer state. In PEFT, optimizer state can be multiple times smaller.
+1. **It prevents catastrophic forgetting.** Training of all parameters makes models forget general knowledge from pretraining. This is similar to overfitting - it makes the model perform well on training data but badly on unseen data.
+1. **It makes finetuning faster.** Fitting less parameters usually needs less iterations to converge.
+1. **It increases accuracy in low-data setting.** If you have a small training set, you might get a more capable model by training only a part of the model. This is likely because of item 2.
+1. **It increases robustness on out-of-domain data.** This is also likely because of item 2.
 
 
 ### How does slicetuning work?
@@ -86,8 +92,9 @@ The idea is to update only selected slices of model parameter tensors. However, 
 ### Why slicetune layers instead of zeroing-out majority of `.grads` in optimizer before `optimizer.step()`?
 Becase optimizing just the tuners inside slicetune layers requires less memory. Let's say we have 1024x1024 linear layer and want to update just 256x256 parameters (around 6%). In zeroing-out method, optimizer saves the state for a each 1024x1024 weight matrix. With slicetune layers, the optimizer only saves the state for the small 256x256 matrix.
 
+<br/>
 
-### TODO
+## TODO
 - [ ] include the "whole-columns" 
 - [ ] benchmark the method
 - [ ] write tests
@@ -98,7 +105,7 @@ Becase optimizing just the tuners inside slicetune layers requires less memory. 
 - [ ] write a slicetune layer for Embedding like LoRA does?
 
 
-### DONE
+## DONE
 - [x] slicetune.nn.Layer
 - [x] slicetune.nn.Linear
 - [x] util fn for patching model
