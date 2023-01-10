@@ -80,7 +80,7 @@ Slicetuning belongs to a family of **parameter-efficient finetuning methods (PEF
 
 ### How does slicetuning work?
 
-The idea is to update only selected slices of model parameter tensors. However, torch optimizers can only update a whole tensor, not slices. `slicetune` solves it by replacing `torch.nn.Linear` layers with `slicetune.nn.Linear` which contains an extra parameter tensor `tuner` which is added to a slice of the `weight` parameter during `.forward()`. Now, you can optimize only the tuner parameters during training. After training, you can replace back slicetune layers with standard layers, apply the `tuner` to the `weight` and obtain a model with exactly the same architecture it had before.
+The idea is to update only selected slices of model parameter tensors. However, torch optimizers can only update whole tensors, not slices. `slicetune` solves it by replacing torch layers with slicetune layers. They contain an extra smaller parameter `tuner` that is added to a slice of `weight` during `.forward()`. Now, you can optimize only the tuner parameters during training. After training, you can swap slicetune layers back with standard torch layers, and "fuse" `tuner` with `weight` and obtain a model with the exact same architecture it had before.
 
 
 ### Why slicetune layers instead of zeroing-out majority of `.grads` in optimizer before `optimizer.step()`?
