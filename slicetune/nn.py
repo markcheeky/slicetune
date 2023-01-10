@@ -174,7 +174,7 @@ class Linear(Layer):
     def from_standard(
         cls,
         layer: torch.nn.Module,
-        tuner_size: float,
+        tuner_size: float | tuple[int, int],
         operation: Literal["add", "mul", "pow"] = "add",
         dropout: float = 0.0,
         random_generator: random.Random | None = None,
@@ -228,7 +228,7 @@ class Linear(Layer):
     def patch(
         cls,
         model: torch.nn.Module,
-        tuner_size: float,
+        tuner_size: float | tuple[int, int],
         operation: Literal["add", "mul", "pow"] = "add",
         dropout: float = 0.0,
         random_generator: random.Random | None = None,
