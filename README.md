@@ -84,7 +84,7 @@ The idea is to update only selected slices of model parameter tensors. However, 
 
 
 ### Why slicetune layers instead of zeroing-out majority of `.grads` in optimizer before `optimizer.step()`?
-Becase optimizing just the tuners is requires less memory. Let's say we have 1024x1024 linear layer and want to update just 256x256 parameters (around 6%). In zeroing-out method, optimizer saves the state for a each 1024x1024 weight matrix. With slicetune layers, the optimizer only saves the state for the small 256x256 matrix.
+Becase optimizing just the tuners inside slicetune layers requires less memory. Let's say we have 1024x1024 linear layer and want to update just 256x256 parameters (around 6%). In zeroing-out method, optimizer saves the state for a each 1024x1024 weight matrix. With slicetune layers, the optimizer only saves the state for the small 256x256 matrix.
 
 
 ### TODO
