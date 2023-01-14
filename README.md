@@ -114,7 +114,7 @@ In contrast, *slicetune* allows you to fuse the changes and get back the exact s
     
 </summary>
 
-[LoRA](https://github.com/microsoft/LoRA) is another popular alternative. Unlike *adapter-transformers*, it is not implemented as a fork of HF *transformers*, so avoids it avoids the issues mentioned above. Like *adapter-transformers*, LoRA modifies the model architecture by adding new layers, and you must account for it when you load a saved model or run inference.
+[LoRA](https://github.com/microsoft/LoRA) is another popular alternative. Unlike *adapter-transformers*, it is not implemented as a fork of HF *transformers*, so avoids it avoids the issues mentioned above. LoRA uses a similar approach to slicetune because LoRA layers can be also "fused" standard torch layers, keeping a finetuned model compatible with original model class. A quantitative comparison has not been done yet. 
 
 </details>
 <details>
