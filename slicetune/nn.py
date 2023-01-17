@@ -30,25 +30,19 @@ class Layer(abc.ABC, torch.nn.Module):
         ...
 
     @staticmethod
-    def get_operation_fn(
-        operation: Literal["add", "mul", "pow"]
-    ) -> Callable[[Tensor, Tensor], Any]:
+    def get_operation_fn(operation: Literal["add", "mul"]) -> Callable[[Tensor, Tensor], Any]:
         if operation == "add":
             return Tensor.add_
         elif operation == "mul":
             return Tensor.mul_
-        elif operation == "pow":
-            return Tensor.pow_
         else:
             raise ValueError(f"Unknown operation: {operation}")
 
     @staticmethod
-    def get_init_value(operation: Literal["add", "mul", "pow"]) -> float:
+    def get_init_value(operation: Literal["add", "mul"]) -> float:
         if operation == "add":
             return 0.0
         elif operation == "mul":
-            return 1.0
-        elif operation == "pow":
             return 1.0
         else:
             raise ValueError(f"Unknown operation: {operation}")
@@ -61,7 +55,7 @@ class Linear(Layer):
         out_features: int,
         tuner_size: tuple[int, int] | float | None,
         bias: bool = True,
-        operation: Literal["add", "mul", "pow"] | None = "add",
+        operation: Literal["add", "mul"] | None = "add",
         dropout: float = 0.0,
         device: torch.device | None = None,
         dtype: torch.dtype | None = None,
@@ -77,7 +71,7 @@ class Linear(Layer):
         self.tuner_dropout: torch.nn.Dropout
         self.in_features: int
         self.out_features: int
-        self.operation: Literal["add", "mul", "pow"]
+        self.operation: Literal["add", "mul"]
         self.operation_fn: Callable[[Tensor, Tensor], Any]
         self.tuner_slice: tuple[slice, slice]
 
@@ -176,7 +170,7 @@ class Linear(Layer):
         cls,
         layer: torch.nn.Module,
         tuner_size: float | tuple[int, int],
-        operation: Literal["add", "mul", "pow"] = "add",
+        operation: Literal["add", "mul"] = "add",
         dropout: float = 0.0,
         random_generator: random.Random | None = None,
     ) -> Self:
@@ -232,7 +226,7 @@ class Linear(Layer):
         cls,
         model: torch.nn.Module,
         tuner_size: float | tuple[int, int],
-        operation: Literal["add", "mul", "pow"] = "add",
+        operation: Literal["add", "mul"] = "add",
         dropout: float = 0.0,
         random_generator: random.Random | None = None,
     ) -> None:
