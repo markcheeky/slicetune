@@ -9,6 +9,8 @@ import torch.nn.functional as F
 from torch import Tensor
 from typing_extensions import Self
 
+import slicetune.utils
+
 
 class Layer(abc.ABC, torch.nn.Module):
     @classmethod
@@ -244,17 +246,24 @@ class Linear(Layer):
             random_generator = random.Random()
 
         # prevent invalidating the iterator by setattr
-        modules = list(model.named_modules())
-        for name, module in modules:
-            if isinstance(module, torch.nn.Linear):
-                replaced = Linear.from_standard(
-                    module,
-                    tuner_size=tuner_size,
-                    operation=operation,
-                    dropout=dropout,
-                    random_generator=random_generator,
-                )
-                setattr(model, name, replaced)
+        module_infos = list(slicetune.utils.named_modules_with_parent(model))
+        for module_info in module_infos:
+            if module_info.parent is None:
+                continue
+            if isinstance(module_info.module, Layer):
+                continue
+            if not isinstance(module_info.module, torch.nn.Linear):
+                continue
+
+            replaced = Linear.from_standard(
+                module_info.module,
+                tuner_size=tuner_size,
+                operation=operation,
+                dropout=dropout,
+                random_generator=random_generator,
+            )
+            setattr(module_info.parent, module_info.attr, replaced)
+            module_infos = list(slicetune.utils.named_modules_with_parent(model))
 
     def __repr__(self) -> str:
         return (

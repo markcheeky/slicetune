@@ -1,5 +1,5 @@
 from . import nn, utils
-from .utils import (
+from .model import (
     describe,
     fuse,
     get_slicetune_layers,
@@ -12,6 +12,7 @@ patch_linears = nn.Linear.patch
 
 __all__ = [
     "nn",
+    "model",
     "utils",
     "patch_linears",
     "describe",
