@@ -16,13 +16,13 @@ def mark_for_training(
 ) -> None:
 
     for param in model.parameters():
-        param.requires_grad = train_rest
+        param.requires_grad_(train_rest)
 
     for param in get_bias_params(model):
-        param.requires_grad = train_biases
+        param.requires_grad_(train_biases)
 
     for param in get_tuners(model):
-        param.requires_grad = train_tuners
+        param.requires_grad_(train_tuners)
 
 
 def fuse(model: torch.nn.Module) -> None:
