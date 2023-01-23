@@ -6,6 +6,7 @@ from typing import Any, Iterable, NamedTuple
 import torch
 
 import slicetune.nn
+import slicetune.utils
 
 
 def mark_for_training(
@@ -31,10 +32,12 @@ def fuse(model: torch.nn.Module) -> None:
     Enables gradient computation for all parameters.
     """
     # prevent invalidating the iterator by setattr
-    modules = list(model.named_modules())
-    for name, module in modules:
-        if isinstance(module, slicetune.nn.Layer):
-            setattr(model, name, module.to_standard())
+    module_infos = list(slicetune.utils.named_modules_with_parent(model))
+    for module_info in module_infos:
+        if isinstance(module_info.module, slicetune.nn.Layer):
+            replacement = module_info.module.to_standard()
+            setattr(module_info.parent, module_info.attr, replacement)
+        module_infos = list(slicetune.utils.named_modules_with_parent(model))
     for param in model.parameters():
         param.requires_grad = True
 
