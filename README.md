@@ -1,4 +1,4 @@
-# Slicetune 🍕 [WIP]
+# Slicetune 🍕 [WIP, breaking changes expected]
 
 A simple, flexible and non-invasive parameter-efficient method for finetuning large neural models.
 
@@ -9,9 +9,7 @@ With slicetune you can finetune only a desired fraction of parameters with a few
 
 ## Instalation
 
-`pip install "slicetune[pretty] @ git+ssh://git@github.com/markcheeky/slicetune.git"`
-
-TODO: publish on pypi
+`pip install slicetune[pretty]`
 
 optional dependency `pretty` is for a pretty summary of finetuning parameters.
 
@@ -143,23 +141,3 @@ Becase optimizing just the tuners inside slicetune layers requires less memory. 
 
 
 <br/>
-
-## TODO
-- [ ] fix that pretty summary does not sum params to 100%
-- [ ] include the "whole-columns" 
-- [ ] benchmark the method
-- [ ] write tests
-- [ ] write docs
-- [ ] write examples
-- [ ] add loading and saving of only finetuned weights
-- [ ] write a slicetune layer for Conv2d like LoRA does?
-- [ ] write a slicetune layer for Embedding like LoRA does?
-
-
-## DONE
-- [x] slicetune.nn.Layer
-- [x] slicetune.nn.Linear
-- [x] util fn for patching model
-- [x] util fn for marking parameters for training
-- [x] util fn for fusing model
-- [x] util fn for description

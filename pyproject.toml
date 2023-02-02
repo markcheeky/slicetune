@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "slicetune"
-version = "0.1.0"
+version = "0.0.1"
 description = "A non-invasive parameter-efficient method for finetuning large neural models."
 authors = ["Marek Kadlcik <10684818+markcheeky@users.noreply.github.com>"]
 license = "MIT"
